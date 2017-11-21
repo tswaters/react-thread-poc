@@ -40,7 +40,7 @@ const config = type => {
       entry.main = './src/server.jsx'
       output.library = 'app'
       output.libraryTarget = 'var'
-      externals.push({stream: 'class{}'}) // todo: fix this!!!
+      externals.push({stream: '{Readable: class{}}'}) // todo: fix this!!!
     break
     case 'client':
       target = 'web'

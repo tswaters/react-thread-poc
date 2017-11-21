@@ -16,7 +16,7 @@ npm i
 npm run build && npm start
 ```
 
-## On my (crappy) laptop
+## On my (crappy) laptop (node@8.8.1)
 
 ```sh
 curl http://localhost:3000/server/500
@@ -39,7 +39,7 @@ thread (500) b2f04135-5bb0-4250-998b-a69c007e9ca1: 0.948ms
 server (500) d17dc3a8-7fca-4a65-b447-d419089fc0bf: 30.740ms
 ```
 
-***note***: thread doesn't support `require` and react-dom/server pulls in `require('stream')` in r.16.  fix this in the dirtiest way possible by creating a dummy class and overwriting the export to point at that.  todo: figure a way to fix this properly (somehow) and add benches for streamed rendering.
+***note***: thread doesn't support `require` and react-dom/server pulls in `require('stream')` in r.16.  I fixed this in the dirtiest way possible, creating a dummy class and overwriting the export to point at that.  todo: figure a way to fix this properly (somehow) and add benches for streamed rendering.
 
 ## If you wanna benchmark...
 
@@ -49,7 +49,10 @@ server (500) d17dc3a8-7fca-4a65-b447-d419089fc0bf: 30.740ms
 
 Then check out `./images`
 
-I ran this myself (again on crappy laptop) and threads continually outperformed the same thread.
+I ran this myself (again on crappy laptop) and threads continually outperformed the server.
 
-The only one that got close was 100 concurrent requests with 10 elements.  So, it would be best to check the number of elements you are rendering - if it is a small amount this may not help you.  The largest discrepency by far was 1000 elements with 100 concurrent users.  server rendering took ~1.5s to come back after the first 200 requests while the thread sat pretty at < 200ms
+Thoughts:
+
+* The only one that got close was 100 concurrent requests with 10 elements.  So, it would be best to check the number of elements you are rendering - if it is a small amount this may not help you.
+* The largest discrepency by far was 1000 elements with 100 concurrent users.  server rendering took ~1.5s to come back after the first 200 requests (!!!) while the thread remained at < 200ms
 
