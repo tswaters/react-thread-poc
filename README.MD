@@ -28,18 +28,28 @@ Results in:
 ```sh
 listening on 3000
 thread (500) f3470fe3-fd4b-49e5-bf74-890d3a9d44fc: 21.094ms
-server (500) 0692a6ff-4966-48b3-8bca-0f899f593a08: 266.075ms
+server (500) 0692a6ff-4966-48b3-8bca-0f899f593a08: 266.075ms  # REALLY!
 ```
 
-Really!
+### I updated to React16 and:
 
+*(react 16)* (less atrocious, but still...):
+```sh
+thread (500) b2f04135-5bb0-4250-998b-a69c007e9ca1: 0.948ms
+server (500) d17dc3a8-7fca-4a65-b447-d419089fc0bf: 30.740ms
+```
+
+***note***: thread doesn't support `require` and react-dom/server pulls in `require('stream')` in r.16.  fix this in the dirtiest way possible by creating a dummy class and overwriting the export to point at that.  todo: figure a way to fix this properly (somehow) and add benches for streamed rendering.
 
 ## If you wanna benchmark...
 
-Mostly here so I can copy/paste:
-
 ```sh
-ab -k -c 100 -n 100 http://127.0.0.1:3000/
-ab -k -c 100 -n 100 "http://127.0.0.1:3000/server/100"
-ab -k -c 200 -n 100 "http://127.0.0.1:3000/thread/100"
+./scripts/bench.sh
 ```
+
+Then check out `./images`
+
+I ran this myself (again on crappy laptop) and threads continually outperformed the same thread.
+
+The only one that got close was 100 concurrent requests with 10 elements.  So, it would be best to check the number of elements you are rendering - if it is a small amount this may not help you.  The largest discrepency by far was 1000 elements with 100 concurrent users.  server rendering took ~1.5s to come back after the first 200 requests while the thread sat pretty at < 200ms
+
