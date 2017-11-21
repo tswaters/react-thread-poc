@@ -1,0 +1,37 @@
+{
+  "name": "react-cp-poc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "debug": "node --inspect app/index",
+    "prebuild": "rimraf dist",
+    "prebuild:watch": "rimraf dist",
+    "build": "cross-env NODE_ENV=production webpack",
+    "build:watch": "cross-env NODE_ENV=development webpack -w",
+    "start": "node app/index"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.4",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "segfault-handler": "^1.0.0",
+    "uuid": "^3.1.0",
+    "webworker-threads": "^0.7.13"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "cross-env": "^5.1.1",
+    "rimraf": "^2.6.2",
+    "uglifyjs-webpack-plugin": "^1.1.0",
+    "webpack": "^3.5.6",
+    "webpack-node-externals": "^1.6.0"
+  }
+}
