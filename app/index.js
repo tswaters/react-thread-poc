@@ -2,7 +2,7 @@ require('segfault-handler').registerHandler('crash.log')
 
 const PORT = 3000
 
-const path = require('path')
+const {join} = require('path')
 const express = require('express')
 const uuid = require('uuid')
 
@@ -21,20 +21,20 @@ const getPage = (title, html, state) => `
   </html>
 `
 
-const thread = require('./worker')('./dist/thread/main.js')
-const {render: server} = require('../dist/server/main')
+const thread = require('./worker')(join(__dirname, '../dist/thread/main.js'))
+const server = require('./server')(join(__dirname, '../dist/server/main.js'))
 
 const app = express()
-app.use(express.static(path.join(__dirname, '../dist/client')))
+app.use(express.static(join(__dirname, '../dist/client')))
 
-app.get('/server/:count', (req, res) => {
+app.get('/server/:count', async (req, res) => {
   const count = req.params.count
   const transaction = uuid.v4()
   const title = `server (${count}) ${transaction}`
   const state = {isReact: true, count}
   console.time(title)
   try {
-    const html = server(state)
+    const html = await server(state)
     res.status(200).end(getPage(title, html, state))
   } catch (err) {
     res.status(500).end(err.message)
