@@ -11,7 +11,7 @@ set key off
 set xlabel 'request #'
 set ylabel 'time (ms)'" > ./data/plotme
 
-types=(server webworker napajs)
+types=(server webworker napajs workerFarm)
 
 min=0
 max=1000

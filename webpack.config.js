@@ -27,6 +27,13 @@ const config = type => {
   ]
 
   switch (type) {
+    case 'worker-farm':
+      target = 'node'
+      babelEnvTargets = {node: 'current'}
+      entry.main = './src/thread.jsx'
+      output.libraryTarget = 'commonjs-module'
+      externals.push(webpackNodeExternals())
+    break
     case 'server':
       target = 'node'
       babelEnvTargets = {node: 'current'}
@@ -100,5 +107,6 @@ module.exports = [
   config('client'),
   config('server'),
   config('webworker'),
-  config('napajs')
+  config('napajs'),
+  config('worker-farm')
 ]

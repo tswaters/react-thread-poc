@@ -9,6 +9,8 @@ There are two routes - each takes a `number` parameter for # of spans to render.
 
 - `/webworker/:number` uses `webworker-threads` to create a thread to perform work on.
 
+- `/workerFarm/:number` uses `worker-farm` to create workers to perform work on
+
 - `/napajs/:number` uses `napajs` to create threads to work on
 
 ## To start off...

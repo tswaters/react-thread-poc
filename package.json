@@ -20,7 +20,8 @@
     "react-dom": "^16.1.1",
     "segfault-handler": "^1.0.0",
     "uuid": "^3.1.0",
-    "webworker-threads": "^0.7.13"
+    "webworker-threads": "^0.7.13",
+    "worker-farm": "^1.5.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
