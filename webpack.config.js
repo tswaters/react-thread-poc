@@ -34,6 +34,7 @@ const config = type => {
       output.libraryTarget = 'commonjs-module'
       externals.push(webpackNodeExternals())
     break
+    case 'napajs':
     case 'webworker':
       target = 'node'
       babelEnvTargets = {node: 'current'}
@@ -98,5 +99,6 @@ const config = type => {
 module.exports = [
   config('client'),
   config('server'),
-  config('webworker')
+  config('webworker'),
+  config('napajs')
 ]

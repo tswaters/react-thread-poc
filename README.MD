@@ -9,12 +9,23 @@ There are two routes - each takes a `number` parameter for # of spans to render.
 
 - `/webworker/:number` uses `webworker-threads` to create a thread to perform work on.
 
+- `/napajs/:number` uses `napajs` to create threads to work on
+
 ## To start off...
 
 ```sh
 npm i
 npm run build && npm start
 ```
+
+### note about napajs
+
+You need to manually patch napajs to get this to work properly:
+
+```
+git apply nappajs-patch.diff
+```
+
 
 ## On my (crappy) laptop (node@8.8.1)
 

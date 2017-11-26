@@ -7,6 +7,7 @@ const uuid = require('uuid')
 
 const serverFactory = require('./types/server')
 const webworkerFactory = require('./types/webworker')
+const napaFactory = require('./types/napajs')
 
 const things = {
   server: {
@@ -16,6 +17,10 @@ const things = {
   webworker: {
     factory: webworkerFactory,
     entry: join(__dirname, '../dist/webworker/main.js')
+  },
+  napajs: {
+    factory: napaFactory,
+    entry: join(__dirname, '../dist/napajs/main.js')
   }
 }
 
