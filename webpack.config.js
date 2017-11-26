@@ -34,7 +34,7 @@ const config = type => {
       output.libraryTarget = 'commonjs-module'
       externals.push(webpackNodeExternals())
     break
-    case 'thread':
+    case 'webworker':
       target = 'node'
       babelEnvTargets = {node: 'current'}
       entry.main = './src/server.jsx'
@@ -96,7 +96,7 @@ const config = type => {
 }
 
 module.exports = [
+  config('client'),
   config('server'),
-  config('thread'),
-  config('client')
+  config('webworker')
 ]

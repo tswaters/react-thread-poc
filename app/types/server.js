@@ -1,4 +1,3 @@
-
 module.exports = entry => {
 
   const {render} = require(entry)

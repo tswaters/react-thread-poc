@@ -7,7 +7,7 @@ There are two routes - each takes a `number` parameter for # of spans to render.
 
 - `/server/:number` - this is the benchmark, uses the current process
 
-- `/thread/:number` uses `webworker-threads` to create a thread to perform work on.
+- `/webworker/:number` uses `webworker-threads` to create a thread to perform work on.
 
 ## To start off...
 

@@ -1,26 +1,46 @@
 #!/bin/bash
 
-set -x
-
-rm -Rf data
-
-mkdir -p data
-
 echo "
-set terminal png
-set output '../images/benchmark_${1}_${2}_${3}.png'
-set title 'Benchmark: ${1} ${2} elements: ${3}'
-set size 1,1
+set terminal png size 1024,768
+set output '../images/benchmark_${1}_${2}.png'
+set title 'Benchmark: ${1} ${2}'
+set datafile separator '\t'
+set size 0.9,1
 set grid y
-set xlabel 'request'
-set ylabel 'response time (ms)'
-" > ./data/plotme
+set key off
+set xlabel 'request #'
+set ylabel 'time (ms)'" > ./data/plotme
 
-ab $1 $2 -g "./data/gnuplot_server_${3}.out" http://localhost:3000/server/$3 > /dev/null
-ab $1 $2 -g "./data/gnuplot_thread_${3}.out" http://localhost:3000/thread/$3 > /dev/null
+types=(server webworker)
 
-echo -e "plot './data/gnuplot_server_${3}.out' using 9 smooth sbezier with lines title 'server' \\" >> ./data/plotme
-echo -e ", './data/gnuplot_thread_${3}.out' using 9 smooth sbezier with lines title 'thread' \\" >> ./data/plotme
+min=0
+max=1000
+step=250
+labelY=$1
+
+for N in `seq $min $step $max`; do
+  for type in ${types[@]}; do
+    echo "Running $type bench for $N elements with $1 requested, $2 concurrency"
+    ab -n $1 -c $2 -g "./data/gnuplot_${type}_$1_$2_${N}.tsv" http://localhost:3000/$type/$N > /dev/null
+  done
+done
+
+for N in `seq $min $step $max`; do
+  for type in ${types[@]}; do
+    echo -e "set label '$type $N' at $labelY,$(tail -n 1 ./data/gnuplot_${type}_$1_$2_${N}.tsv | awk '{print $9}')" >> ./data/plotme
+  done
+done
+
+for N in `seq $min $step $max`; do
+  for type in ${types[@]}; do
+    if [ $N -eq $min ] && [ "$type" == "${types[0]}" ]; then
+      prefix="plot"
+    else
+      prefix=","
+    fi
+    echo -e "$prefix './data/gnuplot_${type}_$1_$2_${N}.tsv' using (column('ttime')) smooth sbezier with lines \\" >> ./data/plotme
+  done
+done
 
 gnuplot ./data/plotme
 
