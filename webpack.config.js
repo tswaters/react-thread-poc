@@ -3,6 +3,7 @@ const path = require('path')
 const webpack = require('webpack')
 const webpackNodeExternals = require('webpack-node-externals')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const WrapperPlugin = require('wrapper-webpack-plugin')
 
 const config = type => {
 
@@ -33,6 +34,20 @@ const config = type => {
       entry.main = './src/thread.jsx'
       output.libraryTarget = 'commonjs-module'
       externals.push(webpackNodeExternals())
+    break
+    case 'worker-pool':
+      target = 'node'
+      babelEnvTargets = {node: 'current'}
+      entry.main = './src/server.jsx'
+      output.libraryTarget = 'commonjs-module'
+      output.library = 'app'
+      output.libraryTarget = 'var'
+      externals.push(webpackNodeExternals())
+      plugins.push(new WrapperPlugin({
+        test: /\.js$/,
+        header: 'var workerpool = require("workerpool");',
+        footer: ';workerpool.worker({render: app.render})'
+      }))
     break
     case 'server':
       target = 'node'
@@ -108,5 +123,6 @@ module.exports = [
   config('server'),
   config('webworker'),
   config('napajs'),
-  config('worker-farm')
+  config('worker-farm'),
+  config('worker-pool')
 ]

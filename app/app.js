@@ -9,6 +9,7 @@ const serverFactory = require('./types/server')
 const webworkerFactory = require('./types/webworker')
 const napaFactory = require('./types/napajs')
 const workerFarmFactory = require('./types/worker-farm')
+const workerPoolFactory = require('./types/worker-pool')
 
 const things = {
   server: {
@@ -22,6 +23,10 @@ const things = {
   workerFarm: {
     factory: workerFarmFactory,
     entry: join(__dirname, '../dist/worker-farm/main.js')
+  },
+  workerPool: {
+    factory: workerPoolFactory,
+    entry: join(__dirname, '../dist/worker-pool/main.js')
   },
   napajs: {
     factory: napaFactory,
