@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "
-set terminal png size 1024,768
+set terminal png size 2000,2000
 set output '../images/benchmark_${1}_${2}.png'
 set title 'Benchmark: ${1} ${2}'
 set datafile separator '\t'
@@ -11,12 +11,12 @@ set key off
 set xlabel 'request #'
 set ylabel 'time (ms)'" > ./data/plotme
 
-types=(server webworker napajs workerFarm)
+types=(napajs webworker workerFarm workerPool)
 
 min=0
 max=1000
 step=250
-labelY=$1
+labelY=$[$1 + 5]
 
 for N in `seq $min $step $max`; do
   for type in ${types[@]}; do
@@ -27,7 +27,7 @@ done
 
 for N in `seq $min $step $max`; do
   for type in ${types[@]}; do
-    echo -e "set label '$type $N' at $labelY,$(tail -n 1 ./data/gnuplot_${type}_$1_$2_${N}.tsv | awk '{print $9}')" >> ./data/plotme
+    echo -e "set label '$type $N' at $labelY,$(tail -n +2 ./data/gnuplot_${type}_$1_$2_${N}.tsv | sort -k 3,3 | tail -n 1 | awk '{print $9}')" >> ./data/plotme
   done
 done
 
@@ -38,7 +38,7 @@ for N in `seq $min $step $max`; do
     else
       prefix=","
     fi
-    echo -e "$prefix './data/gnuplot_${type}_$1_$2_${N}.tsv' using (column('ttime')) smooth sbezier with lines \\" >> ./data/plotme
+    echo -e "$prefix '< tail -n +2 ./data/gnuplot_${type}_$1_$2_${N}.tsv | sort -k 3,3' using 5 smooth sbezier with lines title '$type $N' \\" >> ./data/plotme
   done
 done
 
