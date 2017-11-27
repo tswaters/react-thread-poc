@@ -62,7 +62,7 @@ module.exports = async () => {
     app.get(`/${thing}/:count`, async (req, res) => {
       const count = req.params.count
       const transaction = uuid.v4()
-      const title = `${thing} (${count})`
+      const title = `${transaction} ${thing} (${count})`
       const state = {isReact: true, count}
       console.time(title)
       try {
