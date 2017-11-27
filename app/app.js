@@ -59,7 +59,7 @@ module.exports = async () => {
     const worker = await factory(entry)
 
     console.log(`addding GET /${thing}/:count`)
-    app.get(`/${thing}/:count`, async (req, res) => {
+    app.get(`/${thing}/:count`, async (req, res, next) => {
       const count = req.params.count
       const transaction = uuid.v4()
       const title = `${transaction} ${thing} (${count})`
@@ -69,13 +69,20 @@ module.exports = async () => {
         const html = await worker(state)
         res.status(200).end(getPage(title, html, state))
       } catch (err) {
-        res.status(500).end(err.message + '\n' + err.stack)
+        next(err)
       } finally {
         console.timeEnd(title)
       }
     })
 
   }
+
+  app.use((err, req, res, next) => {
+    if (res.headersSent) { return next(err) }
+    err = typeof err === 'string' ? new Error(err) : err
+    console.error(err)
+    res.status(500).end(err.message)
+  })
 
   return app
 }
