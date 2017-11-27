@@ -69,7 +69,7 @@ module.exports = async () => {
         const html = await worker(state)
         res.status(200).end(getPage(title, html, state))
       } catch (err) {
-        res.status(500).end(err)
+        res.status(500).end(err.message + '\n' + err.stack)
       } finally {
         console.timeEnd(title)
       }

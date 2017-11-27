@@ -14,7 +14,11 @@ module.exports = async entry => {
   await zone1.broadcast(script.toString())
 
   return async state => {
-    const result = await zone1.execute('', 'app.render', [state])
-    return result.value
+    try {
+      const result = await zone1.execute('', 'app.render', [state])
+      return result.value
+    } catch (err) {
+      throw new Error(err)
+    }
   }
 }
