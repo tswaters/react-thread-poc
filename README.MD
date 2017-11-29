@@ -22,16 +22,6 @@ npm i
 npm run build && npm start
 ```
 
-### note about napajs
-
-You need to manually patch napajs to get this to work properly:
-
-```
-git apply nappajs-patch.diff
-```
-
-You may need to convert `./node_modules/napajs/lib/zone/zone-impl.js` to LF for that to work.
-
 ## benchmarks
 
 ```sh
@@ -43,8 +33,7 @@ Note that I don't do benches on `server` because everything else blows it out of
 
 ### At the time of this writing
 
-After applying the patch to napajs so it actually resolves its promises, it is the clear winner.
-`webworker-threads` in a close second - but it has problems with crashing under lots of volume.
+napajs is the clear winner. `webworker-threads` in a close second - but it has problems with crashing under lots of volume.
 
 The various modules that defer to a `child_process` work better than running the rendering on the server, certainly.  But when compared to modules that drop into C and create a proper thread, they just don't scale as well.
 

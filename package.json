@@ -15,7 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.15.4",
-    "napajs": "^0.1.6",
+    "napajs": "^0.1.7",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "segfault-handler": "^1.0.0",
