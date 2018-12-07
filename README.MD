@@ -48,3 +48,7 @@ The various modules that defer to a `child_process` work better than running the
 * make graphs make more sense - right now it's neigh impossible to read. Maybe isolate per elements/concurrency.
 
 * find more threading modules and see if they work any better.
+
+### Pretty Graph
+
+![benchmark results](https://raw.githubusercontent.com/tswaters/react-thread-poc/master/results.png)

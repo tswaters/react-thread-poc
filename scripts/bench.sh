@@ -6,6 +6,12 @@ rm -Rf ./data
 mkdir -p ../images
 mkdir -p ./data
 
-./plotit.sh 1000 1
-./plotit.sh 1000 500
-./plotit.sh 1000 1000
+min=0
+max=1000
+step=250
+
+for N in `seq $min $step $max`; do
+  ./plotit.sh 10000 1 $N
+  ./plotit.sh 10000 500 $N
+  ./plotit.sh 10000 1000 $N
+done
