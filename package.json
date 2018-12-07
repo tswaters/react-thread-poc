@@ -37,10 +37,9 @@
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.4",
     "rimraf": "^2.6.2",
-    "uglifyjs-webpack-plugin": "^1.3.0",
     "webpack": "^4.27.1",
     "webpack-cli": "^3.1.2",
     "webpack-node-externals": "^1.7.2",
-    "wrapper-webpack-plugin": "^1.0.0"
+    "wrapper-webpack-plugin": "^2.0.0"
   }
 }

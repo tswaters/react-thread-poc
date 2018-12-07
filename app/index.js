@@ -1,3 +1,4 @@
+require('segfault-handler').registerHandler('crash.log')
 const PORT = 3000
 const http = require('http')
 const logger = require('./lib/logger')
