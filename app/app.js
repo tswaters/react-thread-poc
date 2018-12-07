@@ -4,6 +4,8 @@
 const {join} = require('path')
 const express = require('express')
 const uuid = require('uuid')
+const {performance} = require('perf_hooks');
+const logger = require('./lib/logger')
 
 const serverFactory = require('./types/server')
 const webworkerFactory = require('./types/webworker')
@@ -58,20 +60,20 @@ module.exports = async () => {
 
     const worker = await factory(entry)
 
-    console.log(`addding GET /${thing}/:count`)
+    logger.info(`addding GET /${thing}/:count`)
     app.get(`/${thing}/:count`, async (req, res, next) => {
+      const start = performance.now()
       const count = req.params.count
       const transaction = uuid.v4()
       const title = `${transaction} ${thing} (${count})`
       const state = {isReact: true, count}
-      console.time(title)
       try {
         const html = await worker(state)
         res.status(200).end(getPage(title, html, state))
       } catch (err) {
         next(err)
       } finally {
-        console.timeEnd(title)
+        logger.debug(title, performance.now() - start)
       }
     })
 

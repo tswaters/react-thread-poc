@@ -17,6 +17,7 @@
     "@babel/runtime": "^7.2.0",
     "express": "^4.15.4",
     "napajs": "^0.1.8",
+    "pino": "^5.9.0",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "segfault-handler": "^1.0.0",
