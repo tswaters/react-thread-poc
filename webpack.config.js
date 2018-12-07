@@ -2,10 +2,12 @@
 const path = require('path')
 const webpack = require('webpack')
 const webpackNodeExternals = require('webpack-node-externals')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const WrapperPlugin = require('wrapper-webpack-plugin')
 
-const config = type => {
+const config = type => (env, argv) => {
+
+  const isProd = argv.mode === 'production'
 
   let target = null
   let babelEnvTargets = null
@@ -23,21 +25,21 @@ const config = type => {
 
   const plugins = [
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+      'process.env.NODE_ENV': JSON.stringify(isProd ? 'production' : 'development')
     })
   ]
 
   switch (type) {
     case 'worker-farm':
       target = 'node'
-      babelEnvTargets = {node: 'current'}
+      babelEnvTargets = {targets: {node: 'current'}}
       entry.main = './src/thread.jsx'
       output.libraryTarget = 'commonjs-module'
       externals.push(webpackNodeExternals())
     break
     case 'worker-pool':
       target = 'node'
-      babelEnvTargets = {node: 'current'}
+      babelEnvTargets = {targets: {node: 'current'}}
       entry.main = './src/server.jsx'
       output.libraryTarget = 'commonjs-module'
       output.library = 'app'
@@ -51,7 +53,7 @@ const config = type => {
     break
     case 'server':
       target = 'node'
-      babelEnvTargets = {node: 'current'}
+      babelEnvTargets = {targets: {node: 'current'}}
       entry.main = './src/server.jsx'
       output.libraryTarget = 'commonjs-module'
       externals.push(webpackNodeExternals())
@@ -59,7 +61,7 @@ const config = type => {
     case 'napajs':
     case 'webworker':
       target = 'node'
-      babelEnvTargets = {node: 'current'}
+      babelEnvTargets = {targets: {node: 'current'}}
       entry.main = './src/server.jsx'
       output.library = 'app'
       output.libraryTarget = 'var'
@@ -67,22 +69,9 @@ const config = type => {
     break
     case 'client':
       target = 'web'
-      babelEnvTargets = {browsers: ['last 2 versions', 'IE 11']}
+      babelEnvTargets = {targets: ['last 2 versions', 'IE 11']}
       entry.main = './src/client.jsx'
-      plugins.push(
-        new webpack.optimize.CommonsChunkPlugin({
-          name: 'vendor',
-          minChunks: ({resource}) => (/node_modules/).test(resource),
-          filename: 'vendor.js'
-        })
-      )
     break
-  }
-
-  if (process.env.NODE_ENV === 'production' && type === 'client') {
-    plugins.push(
-      new UglifyJSPlugin()
-    )
   }
 
   return {
@@ -93,23 +82,42 @@ const config = type => {
       __dirname: false
     },
     output,
+    devtool: 'none',
+
+    optimization: {
+      splitChunks: type !== 'client' ? false : {
+        cacheGroups: {
+          vendor: {
+            test: /node_modules/,
+            chunks: 'initial',
+            filename: 'vendor.js',
+            name: 'vendor',
+            enforce: true
+          }
+        }
+      },
+      minimize: type === 'client',
+      minimizer: [
+        new TerserPlugin()
+      ]
+    },
     externals,
     resolve: {
       extensions: ['.js', '.jsx']
     },
     module: {
-      loaders: [{
+      rules: [{
         test: /\.jsx?$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
         options: {
           presets: [
-            ['env', babelEnvTargets],
-            'react'
+            ['@babel/env', babelEnvTargets],
+            '@babel/react'
           ],
           plugins: [
-            "transform-runtime",
-            "transform-class-properties"
+            "@babel/transform-runtime",
+            "@babel/plugin-proposal-class-properties"
           ]
         }
       }]
