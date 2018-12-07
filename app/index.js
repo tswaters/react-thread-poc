@@ -1,5 +1,3 @@
-require('segfault-handler').registerHandler('crash.log')
-
 const PORT = 3000
 const logger = require('./lib/logger')
 const App = require('./app')
