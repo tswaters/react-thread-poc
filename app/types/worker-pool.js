@@ -1,11 +1,15 @@
 
 const workerpool = require('workerpool')
 
-module.exports = async entry => {
+let pool = null
 
-  const pool = workerpool.pool(entry);
+exports.factory = async entry => {
+
+  pool = workerpool.pool(entry);
 
   return async state => {
     return pool.exec('render', [state])
   }
 }
+
+exports.close = () => pool.terminate()

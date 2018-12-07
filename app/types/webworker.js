@@ -1,8 +1,7 @@
 
-const {join} = require('path')
 const threads = require('webworker-threads')
 
-module.exports = entry => {
+exports.factory = entry => {
 
   const thread = threads.create()
   thread.load(entry)
@@ -15,3 +14,5 @@ module.exports = entry => {
   }
 
 }
+
+exports.close = () => {}

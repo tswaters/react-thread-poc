@@ -6,7 +6,7 @@ const workers = require('os').cpus().length
 
 const readFile = promisify(_readFile)
 
-module.exports = async entry => {
+exports.factory = async entry => {
 
   const zone1 = napa.zone.create('zone1', {workers})
 
@@ -18,3 +18,5 @@ module.exports = async entry => {
     return result.value
   }
 }
+
+exports.close = () => {}

@@ -1,4 +1,4 @@
-module.exports = entry => {
+exports.factory = entry => {
 
   const {render} = require(entry)
 
@@ -15,3 +15,5 @@ module.exports = entry => {
     ))
   }
 }
+
+exports.close = () => {}

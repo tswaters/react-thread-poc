@@ -6,35 +6,7 @@ const express = require('express')
 const uuid = require('uuid')
 const {performance} = require('perf_hooks');
 const logger = require('./lib/logger')
-
-const serverFactory = require('./types/server')
-const webworkerFactory = require('./types/webworker')
-const napaFactory = require('./types/napajs')
-const workerFarmFactory = require('./types/worker-farm')
-const workerPoolFactory = require('./types/worker-pool')
-
-const things = {
-  server: {
-    factory: serverFactory,
-    entry: join(__dirname, '../dist/server/main.js')
-  },
-  webworker: {
-    factory: webworkerFactory,
-    entry: join(__dirname, '../dist/webworker/main.js')
-  },
-  workerFarm: {
-    factory: workerFarmFactory,
-    entry: join(__dirname, '../dist/worker-farm/main.js')
-  },
-  workerPool: {
-    factory: workerPoolFactory,
-    entry: join(__dirname, '../dist/worker-pool/main.js')
-  },
-  napajs: {
-    factory: napaFactory,
-    entry: join(__dirname, '../dist/napajs/main.js')
-  }
-}
+const things = require('./things')
 
 const getPage = (title, html, state) => `
 <html>

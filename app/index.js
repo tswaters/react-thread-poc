@@ -2,6 +2,7 @@ const PORT = 3000
 const http = require('http')
 const logger = require('./lib/logger')
 const App = require('./app')
+const things = require('./things')
 
 ;(async () => {
 
@@ -25,6 +26,8 @@ const App = require('./app')
     logger.info('closing server')
 
     for (let key in connections) connections[key].destroy()
+
+    for (let key in things) await things[key].close()
 
     server.close(() => {
       logger.info('done closing')
