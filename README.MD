@@ -15,6 +15,8 @@ There are two routes - each takes a `number` parameter for # of spans to render.
 
 - `/napajs/:number` uses `napajs` to create threads to work on
 
+- `/worker-thread/:number` uses `worker threads` to create threads to work on.
+
 ## To start off...
 
 ```sh

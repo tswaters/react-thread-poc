@@ -5,7 +5,7 @@ const webworkerFactory = require('./types/webworker')
 const napaFactory = require('./types/napajs')
 const workerFarmFactory = require('./types/worker-farm')
 const workerPoolFactory = require('./types/worker-pool')
-//const workerThreadFactory = require('./types/worker-thread')
+const workerThreadFactory = require('./types/worker-thread')
 
 module.exports = {
   server: {
@@ -33,9 +33,9 @@ module.exports = {
     close: napaFactory.close,
     entry: join(__dirname, '../dist/napajs/main.js')
   },
-  // workerThread: {
-  //   factory: workerThreadFactory.factory,
-  //   close: workerThreadFactory.close,
-  //   entry: join(__dirname, '../dist/worker-thread/main.js')
-  // }
+  workerThread: {
+    factory: workerThreadFactory.factory,
+    close: workerThreadFactory.close,
+    entry: join(__dirname, '../dist/worker-thread/main.js')
+  }
 }

@@ -4,24 +4,27 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "debug": "node --inspect app/index",
+    "debug": "node --experimental-worker --inspect app/index",
     "pre_build": "rimraf dist",
     "_build": "webpack",
     "build": "npm run _build -- --mode=\"production\"",
     "build:watch": "npm run _build -- --mode=\"development\" -w",
-    "start": "node app/index"
+    "start": "node --experimental-worker app/index"
+  },
+  "engines": {
+    "node": ">10.5"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@babel/runtime": "^7.2.0",
     "express": "^4.15.4",
-    "napajs": "^0.1.8",
+    "napajs": "^0.2.3",
     "pino": "^5.9.0",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "uuid": "^3.1.0",
-    "webworker-threads": "^0.7.13",
+    "webworker-threads": "^0.7.17",
     "worker-farm": "^1.5.2",
     "workerpool": "^2.3.0"
   },

@@ -67,6 +67,34 @@ const config = type => (env, argv) => {
       output.libraryTarget = 'var'
       externals.push({stream: '{Readable: class{}}'}) // todo: fix this!!!
     break
+
+    case 'worker-thread':
+      target = 'node'
+      babelEnvTargets = {targets: {node: 'current'}}
+      entry.main = './src/server.jsx'
+      output.library = 'app'
+      externals.push(webpackNodeExternals())
+      plugins.push(new WrapperPlugin({
+        test: /\.js$/,
+        header: `
+          const {parentPort} = require('worker_threads');
+          const {TextEncoder} = require('util')
+        `,
+        footer: `;
+          const encoder = new TextEncoder()
+          parentPort.on('message', ({port, ...rest}) => {
+            let buffer = null;
+            let error = null;
+            try {
+              ({buffer: result} = encoder.encode(app.render(rest)))
+            } catch (err) {
+              error = err;
+            }
+            port.postMessage({result, error}, [result])
+          })`
+      }))
+    break
+
     case 'client':
       target = 'web'
       babelEnvTargets = {targets: ['last 2 versions', 'IE 11']}
@@ -132,5 +160,6 @@ module.exports = [
   config('webworker'),
   config('napajs'),
   config('worker-farm'),
-  config('worker-pool')
+  config('worker-pool'),
+  config('worker-thread')
 ]
