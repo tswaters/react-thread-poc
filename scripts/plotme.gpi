@@ -1,0 +1,14 @@
+set terminal png noenhanced size 2000,2000
+set output '../results.png'
+set title 'Requests: 100000; Concurrency: 1000; Elements: 1000'
+set datafile separator '\t'
+set size 0.9,1
+set grid y
+set xlabel 'request #'
+set ylabel 'time (ms)'
+#set yrange [0:2000]
+
+array items[6] = ["betterthread", "napajs", "worker-farm", "workerpool", "worker_threads", "server"]
+data(n) = sprintf("< tail -n +2 ./data/2_%s.tsv | sort -t '	' -k 2", n)
+
+plot for [i=1:6] data(items[i]) using 5 smooth sbezier with lines title items[i]

@@ -78,15 +78,14 @@ const config = type => (env, argv) => {
         test: /\.js$/,
         header: `
           const {parentPort} = require('worker_threads');
-          const {TextEncoder} = require('util')
+          const {TextEncoder} = require('util');
+          const encoder = new TextEncoder();
         `,
-        footer: `;
-          const encoder = new TextEncoder()
-          parentPort.on('message', ({port, ...rest}) => {
+        footer: `;parentPort.on('message', ({port, ...state}) => {
             let buffer = null;
             let error = null;
             try {
-              ({buffer: result} = encoder.encode(app.render(rest)))
+              ({buffer: result} = encoder.encode(app.render(state)))
             } catch (err) {
               error = err;
             }

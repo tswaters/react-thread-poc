@@ -18,7 +18,9 @@
   "license": "ISC",
   "dependencies": {
     "@babel/runtime": "^7.2.0",
+    "betterthread": "^1.0.4",
     "express": "^4.16.4",
+    "generic-pool": "^3.4.2",
     "napajs": "^0.2.3",
     "pino": "^5.9.0",
     "react": "^16.6.3",

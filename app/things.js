@@ -1,5 +1,6 @@
 
 const {join} = require('path')
+const betterThreadFactory = require('./types/betterthread')
 const serverFactory = require('./types/server')
 const webworkerThreadsFactory = require('./types/webworker-threads')
 const napaFactory = require('./types/napajs')
@@ -11,6 +12,11 @@ module.exports = {
   server: {
     factory: serverFactory.factory,
     close: serverFactory.close,
+    entry: join(__dirname, '../dist/server/main.js')
+  },
+  betterthread: {
+    factory: betterThreadFactory.factory,
+    close: betterThreadFactory.close,
     entry: join(__dirname, '../dist/server/main.js')
   },
   'webworker-threads': {

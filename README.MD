@@ -7,6 +7,8 @@ There are two routes - each takes a `number` parameter for # of spans to render.
 
 - `/server/:number` - this is the baseline, uses the current process
 
+- `/betterthread/:number` uses the `betterthread` to create a thread.
+
 - `/webworker/:number` uses `webworker-threads` to create a thread to perform work on.
 
 - `/workerFarm/:number` uses `worker-farm` to create child processes that do work
@@ -31,21 +33,19 @@ cd scripts
 ./bensh.sh # this can take a while
 ```
 
-Note that I don't do benches on `server` because everything else blows it out of the water.
-
 ### At the time of this writing
 
-napajs is the clear winner. `webworker-threads` in a close second - but it has problems with crashing under lots of volume.
+using no threading is incredibly slow.
 
-The various modules that defer to a `child_process` work better than running the rendering on the server, certainly.  But when compared to modules that drop into C and create a proper thread, they just don't scale as well.
+The various modules that defer to a `child_process` work better than running the rendering on the server, certainly.
 
-(napajs continually stays under 1s, while child_process modules start to take 2/3s under heavy load)
+c modules that dorp into proper threads (napajs, webworker-threads) outperforms the next fasted by a factor of 2 to 1
+
+napajs wins because `webworker-threads` crashes under heavy load.
 
 ## Todo
 
 * thread doesn't support `require` and react-dom/server pulls in `require('stream')` in r.16.  I fixed this in the dirtiest way possible, creating a dummy class and overwriting the export to point at that.  todo: figure a way to fix this properly (somehow) and add benches for streamed rendering.
-
-* make graphs make more sense - right now it's neigh impossible to read. Maybe isolate per elements/concurrency.
 
 * find more threading modules and see if they work any better.
 
