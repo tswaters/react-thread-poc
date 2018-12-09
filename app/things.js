@@ -1,11 +1,11 @@
 
 const {join} = require('path')
 const serverFactory = require('./types/server')
-const webworkerFactory = require('./types/webworker')
+const webworkerThreadsFactory = require('./types/webworker-threads')
 const napaFactory = require('./types/napajs')
 const workerFarmFactory = require('./types/worker-farm')
-const workerPoolFactory = require('./types/worker-pool')
-const workerThreadFactory = require('./types/worker-thread')
+const workerPoolFactory = require('./types/workerpool')
+const workerThreadsFactory = require('./types/worker_threads')
 
 module.exports = {
   server: {
@@ -13,29 +13,29 @@ module.exports = {
     close: serverFactory.close,
     entry: join(__dirname, '../dist/server/main.js')
   },
-  webworker: {
-    factory: webworkerFactory.factory,
-    close: webworkerFactory.close,
-    entry: join(__dirname, '../dist/webworker/main.js')
+  'webworker-threads': {
+    factory: webworkerThreadsFactory.factory,
+    close: webworkerThreadsFactory.close,
+    entry: join(__dirname, '../dist/webworker-threads/main.js')
   },
-  workerFarm: {
+  'worker-farm': {
     factory: workerFarmFactory.factory,
     close: workerFarmFactory.close,
     entry: join(__dirname, '../dist/worker-farm/main.js')
   },
-  workerPool: {
+  workerpool: {
     factory: workerPoolFactory.factory,
     close: workerPoolFactory.close,
-    entry: join(__dirname, '../dist/worker-pool/main.js')
+    entry: join(__dirname, '../dist/workerpool/main.js')
   },
   napajs: {
     factory: napaFactory.factory,
     close: napaFactory.close,
     entry: join(__dirname, '../dist/napajs/main.js')
   },
-  workerThread: {
-    factory: workerThreadFactory.factory,
-    close: workerThreadFactory.close,
-    entry: join(__dirname, '../dist/worker-thread/main.js')
+  'worker_threads': {
+    factory: workerThreadsFactory.factory,
+    close: workerThreadsFactory.close,
+    entry: join(__dirname, '../dist/worker_threads/main.js')
   }
 }

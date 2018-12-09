@@ -37,7 +37,7 @@ const config = type => (env, argv) => {
       output.libraryTarget = 'commonjs-module'
       externals.push(webpackNodeExternals())
     break
-    case 'worker-pool':
+    case 'workerpool':
       target = 'node'
       babelEnvTargets = {targets: {node: 'current'}}
       entry.main = './src/server.jsx'
@@ -59,7 +59,7 @@ const config = type => (env, argv) => {
       externals.push(webpackNodeExternals())
     break
     case 'napajs':
-    case 'webworker':
+    case 'webworker-threads':
       target = 'node'
       babelEnvTargets = {targets: {node: 'current'}}
       entry.main = './src/server.jsx'
@@ -68,7 +68,7 @@ const config = type => (env, argv) => {
       externals.push({stream: '{Readable: class{}}'}) // todo: fix this!!!
     break
 
-    case 'worker-thread':
+    case 'worker_threads':
       target = 'node'
       babelEnvTargets = {targets: {node: 'current'}}
       entry.main = './src/server.jsx'
@@ -157,9 +157,9 @@ const config = type => (env, argv) => {
 module.exports = [
   config('client'),
   config('server'),
-  config('webworker'),
+  config('webworker-threads'),
   config('napajs'),
   config('worker-farm'),
-  config('worker-pool'),
-  config('worker-thread')
+  config('workerpool'),
+  config('worker_threads')
 ]
