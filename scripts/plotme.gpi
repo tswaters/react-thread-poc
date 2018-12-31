@@ -1,6 +1,6 @@
 set terminal png noenhanced size 2000,2000
-set output '../results.png'
-set title 'Requests: 100000; Concurrency: 1000; Elements: 1000'
+set output sprintf('./images/%s_%s_%s.png', ARG1, ARG2, ARG3)
+set title sprintf('Requests: %s; Concurrency: %s; Elements: %s', ARG1, ARG2, ARG3)
 set datafile separator '\t'
 set size 0.9,1
 set grid y
@@ -9,6 +9,6 @@ set ylabel 'time (ms)'
 #set yrange [0:2000]
 
 array items[6] = ["betterthread", "napajs", "worker-farm", "workerpool", "worker_threads", "server"]
-data(n) = sprintf("< tail -n +2 ./data/2_%s.tsv | sort -t '	' -k 2", n)
+data(n) = sprintf("< tail -n +2 ./data/%s_%s_%s_%s.tsv | sort -t '	' -k 2", ARG1, ARG2, ARG3, n)
 
 plot for [i=1:6] data(items[i]) using 5 smooth sbezier with lines title items[i]
