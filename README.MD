@@ -23,7 +23,10 @@ There are two routes - each takes a `number` parameter for # of spans to render.
 
 ```sh
 npm i
-npm run build && npm start
+npm run build
+LOG_LEVEL=info npm start
+
+# -- interesting log levels are `silent`, `debug`, `info` - defaults to `silent`
 ```
 
 ## benchmarks
