@@ -25,7 +25,7 @@ types+=('server')
 
 for type in ${types[@]}; do
   echo "Running $type bench for $elements elements with $requests requested, $concurrency concurrency"
-  ab -s 99999 -n $requests -c $concurrency -g "./data/${requests}_${concurrency}_${elements}_${type}.tsv" http://localhost:3000/$type/$elements
+  ab -s 99999 -n $requests -c $concurrency -g "./data/${requests}_${concurrency}_${elements}_${type}.tsv" http://127.0.0.1:3000/$type/$elements
 done
 
 gnuplot -c ./plotme.gpi $requests $concurrency $elements
