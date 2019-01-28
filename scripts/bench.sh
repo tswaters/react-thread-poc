@@ -2,11 +2,13 @@
 
 set -e
 
-rm -Rf ../images
-rm -Rf ./data
+mybasedir=$(dirname "$0")
 
-mkdir -p ../images
-mkdir -p ./data
+rm -Rf "$mybasedir/images"
+rm -Rf "$mybasedir/data"
+
+mkdir -p "$mybasedir/images"
+mkdir -p "$mybasedir/data"
 
 requests=100000
 concurrency=1000
