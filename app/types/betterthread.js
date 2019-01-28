@@ -10,7 +10,8 @@ exports.factory = async () => {
 
   pool = createPool({
     create: () => new bt.ThreadedFunction((message, done) => {
-      const {render} = require('../../dist/server/main.js')
+      const {join} = require('path')
+      const {render} = require(join(process.cwd(), 'dist/server/main.js'))
       done(render(message))
     }),
     destroy: (thread) => thread.kill()
